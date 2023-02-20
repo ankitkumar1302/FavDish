@@ -4,13 +4,20 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/primary_dark_color"
     tools:context=".SplashActivity">
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/tv_app_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="TextView"
-        tools:layout_editor_absoluteX="166dp"
-        tools:layout_editor_absoluteY="315dp" />
+        android:text="@string/splash_screen_title"
+        android:textColor="@color/white"
+        android:textSize="50sp"
+        android:fontFamily="cursive"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>
