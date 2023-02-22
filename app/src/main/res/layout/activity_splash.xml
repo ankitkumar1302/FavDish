@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/primary_dark_color"
-    tools:context=".SplashActivity">
+    tools:context=".view.activities.SplashActivity">
 
     <TextView
         android:id="@+id/tv_app_name"
@@ -15,7 +15,6 @@
         android:textColor="@color/white"
         android:textSize="50sp"
         android:fontFamily="cursive"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
