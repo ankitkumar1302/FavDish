@@ -48,7 +48,7 @@ class SplashActivity : AppCompatActivity() {
 
                     startActivity(Intent(this@SplashActivity, MainActivity::class.java))
                     finish()
-                },1000)
+                },500)
 
             }
             override fun onAnimationRepeat(p0: Animation?) {
