@@ -38,7 +38,7 @@
                 android:id="@+id/fl_select_image"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/_200sdp"
-                android:background="@drawable/dish_image"
+
                 android:padding="@dimen/_2sdp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -48,7 +48,7 @@
                     android:id="@+id/iv_dish_image"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:background="@drawable/dish_image"
+
                     android:padding="@dimen/_5sdp"
                     android:scaleType="fitXY"
                     tools:srcCompat="@tools:sample/avatars" />
@@ -202,14 +202,13 @@
                 android:id="@+id/button"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_margin="@dimen/_16sdp"
                 android:layout_weight="1"
                 android:text="@string/add_dish"
-                android:layout_margin="@dimen/_16sdp"
                 app:layout_constraintEnd_toEndOf="@+id/til_directionCook"
                 app:layout_constraintStart_toStartOf="@+id/til_directionCook"
-                tools:layout_editor_absoluteY="779dp"
                 app:layout_constraintTop_toBottomOf="@+id/til_directionCook"
-                />
+                tools:layout_editor_absoluteY="779dp" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>

@@ -14,6 +14,7 @@ import android.graphics.Bitmap
 import android.media.audiofx.Equalizer.Settings
 import android.net.Uri
 import android.provider.MediaStore
+import android.util.Log
 import androidx.core.content.ContextCompat
 import com.example.favdish.R
 import com.example.favdish.databinding.ActivityAddUpdateDishBinding
@@ -87,8 +88,7 @@ class AddUpdateDishActivity : AppCompatActivity(), View.OnClickListener {
                 }
 
                 override fun onPermissionRationaleShouldBeShown(
-                    permissions: MutableList<PermissionRequest>?,
-                    token: PermissionToken?
+                    permissions: MutableList<PermissionRequest>?, token: PermissionToken?
                 ) {
                     //TODO Show Alert Dialog
                     showRationalDialogForPermission()
@@ -99,35 +99,37 @@ class AddUpdateDishActivity : AppCompatActivity(), View.OnClickListener {
         }
 
         binding.tvGallery.setOnClickListener {
-            Dexter.withContext(this@AddUpdateDishActivity)
-                .withPermission(
-                    Manifest.permission.READ_EXTERNAL_STORAGE,
+            Dexter.withContext(this@AddUpdateDishActivity).withPermission(
+                Manifest.permission.READ_EXTERNAL_STORAGE,
 //                 Manifest.permission.WRITE_EXTERNAL_STORAGE,
-                ).withListener(object : PermissionListener {
-                    override fun onPermissionGranted(p0: PermissionGrantedResponse?) {
+            ).withListener(object : PermissionListener {
+                override fun onPermissionGranted(p0: PermissionGrantedResponse?) {
 
-                        
+                    val galleryIntent =
+                        Intent(
+                            Intent.ACTION_PICK,
+                            MediaStore.Images.Media.EXTERNAL_CONTENT_URI
+                        )
+                    startActivityForResult(galleryIntent, GALLERY)
+                }
 
-                    }
+                override fun onPermissionDenied(p0: PermissionDeniedResponse?) {
+                    Toast.makeText(
+                        this@AddUpdateDishActivity,
+                        "You have the Denied the storage permission to select image",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
 
-                    override fun onPermissionDenied(p0: PermissionDeniedResponse?) {
-                        Toast.makeText(
-                            this@AddUpdateDishActivity,
-                            "You have the Denied the storage permission to select image",
-                            Toast.LENGTH_SHORT
-                        ).show()
-                    }
-
-                    override fun onPermissionRationaleShouldBeShown(
-                        p0: PermissionRequest?,
-                        p1: PermissionToken?
-                    ) {
-                        TODO("Not yet implemented")
+                override fun onPermissionRationaleShouldBeShown(
+                    p0: PermissionRequest?, p1: PermissionToken?
+                ) {
+                    TODO("Not yet implemented")
 //                     showRationalDialogForPermission()
-                    }
+                }
 
 
-                }).onSameThread().check()
+            }).onSameThread().check()
 
             dialog.dismiss()
         }
@@ -143,36 +145,48 @@ class AddUpdateDishActivity : AppCompatActivity(), View.OnClickListener {
                     mBinding.ivDishImage.setImageBitmap(thumbnail)
                     mBinding.ivAddDishImage.setImageDrawable(
                         ContextCompat.getDrawable(
-                            this,
-                            R.drawable.ic_vector_edit
+                            this, R.drawable.ic_vector_edit
                         )
                     )
                 }
             }
+
+            if (requestCode == GALLERY) {
+                data?.let {
+
+                    val selectedPhotoUri = data.data
+
+                    mBinding.ivDishImage.setImageURI(selectedPhotoUri)
+                    mBinding.ivAddDishImage.setImageDrawable(
+                        ContextCompat.getDrawable(
+                            this, R.drawable.ic_vector_edit
+                        )
+                    )
+                }
+            }
+        }else if (resultCode ==Activity.RESULT_CANCELED){
+            Log.e("Cancelled","User Cancelled Image selection")
         }
     }
-
 
     private fun showRationalDialogForPermission() {
 
         AlertDialog.Builder(this).setMessage(
-            "It Look like you have turned off permissions" +
-                    "required for this feature.It can be enabled under Application Settings"
-        )
-            .setPositiveButton("GO TO SETTINGS") { _, _ ->
-                try {
-                    val intent =
-                        Intent(android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
-                    val uri = Uri.fromParts("package", packageName, null)
-                    intent.data = uri
-                    startActivity(intent)
-                } catch (e: ActivityNotFoundException) {
-                    e.printStackTrace()
-                }
+            "It Look like you have turned off permissions" + "required for this feature.It can be enabled under Application Settings"
+        ).setPositiveButton("GO TO SETTINGS") { _, _ ->
+            try {
+                val intent =
+                    Intent(android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
+                val uri = Uri.fromParts("package", packageName, null)
+                intent.data = uri
+                startActivity(intent)
+            } catch (e: ActivityNotFoundException) {
+                e.printStackTrace()
+            }
 
-            }.setNegativeButton("Cancel") { dialog, _ ->
-                dialog.dismiss()
-            }.show()
+        }.setNegativeButton("Cancel") { dialog, _ ->
+            dialog.dismiss()
+        }.show()
 
     }
 
